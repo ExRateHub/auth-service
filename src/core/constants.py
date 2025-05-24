@@ -1,0 +1,1 @@
+COLLATION_CI_TEXT_NAME = "ci_text"

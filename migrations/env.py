@@ -6,9 +6,9 @@ import asyncio
 from alembic import context
 from sqlalchemy.engine import Connection
 
-from src.core.config import LOGGING_CONFIG, get_settings
-from src.infrastructure.database.engine import create_engine_from_settings
-from src.infrastructure.database.models.base import metadata
+from core.config import LOGGING_CONFIG, get_settings
+from infrastructure.database.engine import create_engine_from_settings
+from infrastructure.database.models.base import metadata
 
 config = context.config
 settings = get_settings()
