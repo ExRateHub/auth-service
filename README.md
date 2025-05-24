@@ -83,6 +83,17 @@ cp .env.example .env
 
 Методология разработки: GitFlow
 
+[gitflow "branch"]
+* master = master
+* develop = develop
+
+[gitflow "prefix"]
+* feature = feature/
+* bugfix = bugfix/
+* release = release/
+* hotfix = hotfix/
+* support = support/
+* versiontag = v
 Пожалуйста, открывайте pull requests в ветку `develop`. Обсуждаем изменения через GitHub Issues.
 
 ## Лицензия
