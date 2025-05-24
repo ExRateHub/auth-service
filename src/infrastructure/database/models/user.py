@@ -1,9 +1,9 @@
 from sqlalchemy.orm import Mapped, mapped_column
 import sqlalchemy as sa
-from sqlalchemy.dialects.postgresql import UUID, CITEXT
+from sqlalchemy.dialects.postgresql import UUID
 import uuid
-from base import TimestampedModel
 from core.constants import COLLATION_CI_TEXT_NAME
+from infrastructure.database.models import TimestampedModel
 
 
 class UserModel(TimestampedModel):
@@ -13,7 +13,7 @@ class UserModel(TimestampedModel):
         UUID(as_uuid=True),
         primary_key=True,
         default=uuid.uuid4,
-        server_default=sa.text("uuid_generate_v4()"),
+        server_default=sa.text("gen_random_uuid()"),
     )
 
     email: Mapped[str] = mapped_column(
