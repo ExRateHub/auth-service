@@ -6,6 +6,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 PROJECT_DIR = Path(__file__).parent.parent.parent.resolve()
+LOGGING_CONFIG = PROJECT_DIR / "logging.yaml"
+
 
 class PostgresConnection(BaseSettings):
     name: str
