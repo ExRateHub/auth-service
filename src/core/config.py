@@ -16,6 +16,12 @@ class PostgresConnection(BaseSettings):
     username: str
     password: str
 
+    engine: str = Field(default="postgresql", frozen=True)
+    driver: str = Field(default="psycopg", frozen=True)
+
+    def get_url(self) -> str:
+        return f"{self.engine}+{self.driver}://{self.username}:{self.password}@{self.host}:{self.port}/{self.name}"
+
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
