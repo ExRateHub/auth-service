@@ -44,7 +44,7 @@ cd auth-service
 Установите зависимости:
 
 ```bash
-uv install
+uv sync
 ```
 
 ### Конфигурация
