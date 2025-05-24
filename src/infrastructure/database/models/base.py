@@ -1,5 +1,6 @@
 import sqlalchemy as sa
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+import datetime
 
 metadata = sa.MetaData(
     naming_convention={
@@ -11,6 +12,25 @@ metadata = sa.MetaData(
     }
 )
 
+
 class BaseModel(DeclarativeBase):
     """Base model"""
+
     metadata = metadata
+
+
+class TimestampedModel(BaseModel):
+    __abstract__ = True
+
+    created_at: Mapped[datetime.datetime] = mapped_column(
+        sa.DateTime,
+        nullable=False,
+        server_default=sa.func.timezone("utc", sa.func.now()),
+    )
+
+    updated_at: Mapped[datetime.datetime] = mapped_column(
+        sa.DateTime,
+        nullable=False,
+        server_default=sa.func.timezone("utc", sa.func.now()),
+        server_onupdate=sa.func.timezone("utc", sa.func.now()),
+    )
