@@ -32,6 +32,7 @@ dev = [
     "pytest-asyncio>=0.26.0",
     "pre-commit>=4.2.0",
     "black>=25.1.0",
+    "sqlalchemy[mypy]>=2.0.41",
 ]
 
 [tool.mypy]
@@ -40,7 +41,7 @@ ignore_missing_imports = true
 strict = true
 files = ["src", "tests"]
 allow_redefinition = false
-plugins = ["pydantic.mypy"]
+plugins = ["pydantic.mypy", "sqlalchemy.ext.mypy.plugin"]
 
 [tool.pydantic-mypy]
 init_forbid_extra = false
