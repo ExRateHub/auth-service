@@ -1,4 +1,4 @@
-from domain.services.password_hasher import PasswordHasherProtocol
+from domain.ports.password_hasher import PasswordHasherProtocol
 from pwdlib import PasswordHash as PWDLibPasswordHash
 from pwdlib.hashers.argon2 import Argon2Hasher as PWDLibArgon2Hasher
 
