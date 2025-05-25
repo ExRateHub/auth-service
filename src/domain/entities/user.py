@@ -3,7 +3,7 @@ from __future__ import annotations
 import uuid
 from dataclasses import dataclass
 
-from domain.services.password_hasher import PasswordHasherProtocol
+from domain.ports.password_hasher import PasswordHasherProtocol
 from domain.value_objects.email import Email
 
 
