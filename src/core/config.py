@@ -1,3 +1,4 @@
+import os
 from functools import lru_cache
 from pathlib import Path
 
@@ -6,7 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 PROJECT_DIR = Path(__file__).parent.parent.parent.resolve()
 LOGGING_CONFIG = PROJECT_DIR / "logging.yaml"
-ENV_FILE = PROJECT_DIR / ".env"
+ENV_FILE = PROJECT_DIR / os.getenv("ENV_FILE", ".env")
 
 
 class PostgresConnection(BaseSettings):
