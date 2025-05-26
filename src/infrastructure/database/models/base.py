@@ -1,6 +1,7 @@
+import datetime
+
 import sqlalchemy as sa
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-import datetime
 
 metadata = sa.MetaData(
     naming_convention={

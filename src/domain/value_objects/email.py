@@ -10,4 +10,3 @@ class Email:
         pattern = r"[^@]+@[^@]+\.[^@]+"
         if not re.match(pattern, self.value):
             raise ValueError(f"Invalid email address: {self.value}")
-

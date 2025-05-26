@@ -9,7 +9,6 @@ Create Date: 2025-05-24 19:27:33.419081
 from typing import Sequence, Union
 
 from alembic import op
-import sqlalchemy as sa
 
 from core.constants import COLLATION_CI_TEXT_NAME
 
@@ -24,8 +23,7 @@ def upgrade() -> None:
     """Upgrade schema."""
     op.execute(
         f"""
-        CREATE COLLATION IF NOT EXISTS {COLLATION_CI_TEXT_NAME} 
-        (
+        CREATE COLLATION IF NOT EXISTS {COLLATION_CI_TEXT_NAME}(
             provider = icu,
             locale = 'und-u-ks-level2',
             deterministic = false
