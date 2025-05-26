@@ -1,8 +1,7 @@
+import asyncio
 from logging.config import dictConfig
 
 import yaml
-import asyncio
-
 from alembic import context
 from sqlalchemy.engine import Connection
 
@@ -59,7 +58,7 @@ async def run_async_migrations() -> None:
     """
 
     engine = create_engine_from_settings(settings)
-    
+
     async with engine.connect() as connection:
         await connection.run_sync(do_run_migrations)
 
