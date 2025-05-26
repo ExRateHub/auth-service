@@ -1,7 +1,9 @@
-from sqlalchemy.orm import Mapped, mapped_column
+import uuid
+
 import sqlalchemy as sa
 from sqlalchemy.dialects.postgresql import UUID
-import uuid
+from sqlalchemy.orm import Mapped, mapped_column
+
 from core.constants import COLLATION_CI_TEXT_NAME
 from infrastructure.database.models import TimestampedModel
 
