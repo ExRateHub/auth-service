@@ -31,5 +31,5 @@ class Settings(BaseSettings):
 @lru_cache()
 def get_settings(**kwargs) -> Settings:
     """Return settings"""
-    kwargs.setdefault("_env_file", os.getenv("ENV_FILE", ".env"))
+    kwargs.setdefault("_env_file", os.getenv("ENV_FILE", PROJECT_DIR / ".env"))
     return Settings(**kwargs)
