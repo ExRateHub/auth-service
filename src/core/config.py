@@ -7,7 +7,6 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 PROJECT_DIR = Path(__file__).parent.parent.parent.resolve()
 LOGGING_CONFIG = PROJECT_DIR / "logging.yaml"
-ENV_FILE = PROJECT_DIR / os.getenv("ENV_FILE", ".env")
 
 
 class PostgresConnection(BaseSettings):
@@ -25,13 +24,12 @@ class PostgresConnection(BaseSettings):
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(
-        env_file=ENV_FILE, env_file_encoding="utf-8", env_nested_delimiter="_"
-    )
+    model_config = SettingsConfigDict(env_file_encoding="utf-8", env_nested_delimiter="_")
     database: PostgresConnection
 
 
 @lru_cache()
 def get_settings(**kwargs) -> Settings:
     """Return settings"""
+    kwargs.setdefault("_env_file", os.getenv("ENV_FILE", ".env"))
     return Settings(**kwargs)
