@@ -21,6 +21,7 @@ dependencies = [
     "redis[hiredis]>=6.1.0",
     "aiosmtplib>=4.0.1",
     "dishka>=1.6.0",
+    "adaptix[pydantic,sqlalchemy]>=3.0.0b11",
 ]
 
 [dependency-groups]

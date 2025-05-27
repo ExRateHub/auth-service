@@ -24,7 +24,7 @@ class UserModel(TimestampedModel):
         nullable=False,
     )
 
-    password_hash: Mapped[str] = mapped_column(
+    hashed_password: Mapped[str] = mapped_column(
         sa.Text,
         nullable=False,
     )
