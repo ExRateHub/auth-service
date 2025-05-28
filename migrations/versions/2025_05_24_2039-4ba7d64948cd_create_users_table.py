@@ -25,7 +25,7 @@ def upgrade() -> None:
         "users",
         sa.Column("id", sa.UUID(), server_default=sa.text("gen_random_uuid()"), nullable=False),
         sa.Column("email", sa.Text(collation="ci_text"), nullable=False),
-        sa.Column("password_hash", sa.Text(), nullable=False),
+        sa.Column("hashed_password", sa.Text(), nullable=False),
         sa.Column("is_active", sa.Boolean(), server_default=sa.text("false"), nullable=False),
         sa.Column(
             "created_at",
