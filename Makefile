@@ -4,6 +4,7 @@ HTTP_SERVER := granian
 ENVIRONMENT ?= dev
 
 export PYTHONPATH
+export ENVIRONMENT
 
 .PHONY: run-dev-serve
 run-dev-serve:
