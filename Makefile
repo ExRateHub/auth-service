@@ -21,6 +21,5 @@ run-dev-serve:
 .PHONY: format
 format:
 	@echo "Applying formatting..."
-	isort src tests migrations
 	black src tests migrations
-	ruff format src tests migrations || true
+	ruff format src tests migrations
