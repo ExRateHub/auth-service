@@ -30,5 +30,8 @@ class UserModel(TimestampedModel):
     )
 
     is_active: Mapped[bool] = mapped_column(
-        sa.Boolean, nullable=False, default=False, server_default=sa.text("false")
+        sa.Boolean,
+        nullable=False,
+        default=False,
+        server_default=sa.text("false"),
     )
