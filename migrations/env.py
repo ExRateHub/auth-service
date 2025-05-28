@@ -1,11 +1,10 @@
 import asyncio
-from logging.config import dictConfig
 
-import yaml
 from alembic import context
 from sqlalchemy.engine import Connection
 
-from core.config import LOGGING_CONFIG, get_settings
+from core.config import get_settings
+from core.logging import setup_logging
 from infrastructure.database.engine import create_engine_from_settings
 from infrastructure.database.models.base import metadata
 
@@ -13,10 +12,7 @@ config = context.config
 settings = get_settings()
 
 
-with open(LOGGING_CONFIG) as logging_file:
-    logging_config = yaml.safe_load(logging_file)
-
-dictConfig(logging_config)
+setup_logging()
 
 target_metadata = metadata
 
