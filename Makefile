@@ -1,5 +1,7 @@
 PYTHONPATH := src
 HTTP_SERVER := granian
+HTTP_SERVER_HOST ?= 127.0.0.1
+HTTP_SERVER_PORT ?= 8080
 
 ENVIRONMENT ?= dev
 
@@ -10,6 +12,8 @@ export ENVIRONMENT
 run-dev-serve:
 	$(HTTP_SERVER) \
 	    interface.http.asgi:create_asgi_application \
+		--host=$(HTTP_SERVER_HOST) \
+		--port=$(HTTP_SERVER_PORT) \
 		--interface=asgi \
 		--factory \
 		--reload
