@@ -1,6 +1,7 @@
 PYTHONPATH := src
 HTTP_SERVER := granian
 
+ENVIRONMENT ?= dev
 
 export PYTHONPATH
 
