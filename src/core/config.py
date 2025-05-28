@@ -1,6 +1,7 @@
 import os
 from functools import lru_cache
 from pathlib import Path
+from typing import Any
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -23,12 +24,22 @@ class PostgresConnection(BaseSettings):
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file_encoding="utf-8", env_nested_delimiter="_")
+    model_config = SettingsConfigDict(
+        env_file_encoding="utf-8",
+        env_nested_delimiter="_",
+    )
     database: PostgresConnection
 
 
+def _get_env_file() -> Path:
+    environment = os.getenv("ENVIRONMENT", default="dev")
+    env_file = PROJECT_DIR / f".env.{environment}"
+    return env_file
+
+
 @lru_cache()
-def get_settings(**kwargs) -> Settings:
+def get_settings(**overrides: Any) -> Settings:
     """Return settings"""
-    kwargs.setdefault("_env_file", os.getenv("ENV_FILE", PROJECT_DIR / ".env"))
-    return Settings(**kwargs)
+    env_file = _get_env_file()
+    overrides.setdefault("_env_file", env_file)
+    return Settings(**overrides)
