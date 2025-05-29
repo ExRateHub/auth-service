@@ -23,7 +23,6 @@ class User(BaseEntity):
         is_active: bool = False,
     ) -> User:
         return cls(
-            id=uuid.uuid4(),
             email=email,
             hashed_password=hashed_password,
             is_active=is_active,
