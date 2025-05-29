@@ -23,3 +23,9 @@ format:
 	@echo "Applying formatting..."
 	black src tests migrations
 	ruff format src tests migrations
+
+
+.PHONY: test
+test:
+	@echo "Run tests"
+	pytest tests
