@@ -46,7 +46,7 @@ class HashedPassword(BaseValueObject):
     def validate(self) -> None:
         parts = self.value.split("$")
         if len(parts) < 5 or not parts[1] or not parts[-2] or not parts[-1]:
-            raise InvalidHashedPassword(f"Invalid MCF format: expected at least 4 fields, got {len(parts)-1}")
+            raise InvalidHashedPassword(f"Invalid MCF format: expected at least 4 fields, got {len(parts) - 1}")
 
     def as_generic_type(self) -> str:
         return str(self.value)
