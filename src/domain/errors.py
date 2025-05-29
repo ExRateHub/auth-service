@@ -5,5 +5,6 @@ class DomainError(Exception):
 class InvalidHashedPassword(DomainError):
     pass
 
+
 class InvalidEmail(DomainError):
     pass
