@@ -26,7 +26,7 @@ class JwtToken(BaseValueObject[str]):
         return self.parts[2]
 
     @property
-    def header_obj(self) -> Dict[Base64String, Any]:
+    def header_obj(self) -> Dict[str, Any]:
         decoded = self.header.decode()
         return json.loads(decoded)
 
