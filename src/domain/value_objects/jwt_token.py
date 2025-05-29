@@ -1,7 +1,8 @@
 import json
-from typing import Any, Dict, Tuple
 from dataclasses import dataclass
-from domain.errors import InvalidJWTToken, InvalidBase64Encoding
+from typing import Any
+
+from domain.errors import InvalidJWTToken
 from domain.value_objects.base import BaseValueObject
 from domain.value_objects.base64_strng import Base64String
 
@@ -9,7 +10,7 @@ from domain.value_objects.base64_strng import Base64String
 @dataclass(frozen=True)
 class JwtToken(BaseValueObject[str]):
     @property
-    def parts(self) -> Tuple[Base64String, Base64String, Base64String]:
+    def parts(self) -> tuple[Base64String, Base64String, Base64String]:
         parts = self.value.split(".")
         return tuple(Base64String(part) for part in parts)  # type: ignore[return-value]
 
@@ -26,12 +27,12 @@ class JwtToken(BaseValueObject[str]):
         return self.parts[2]
 
     @property
-    def header_obj(self) -> Dict[str, Any]:
+    def header_obj(self) -> dict[str, Any]:
         decoded = self.header.decode()
         return json.loads(decoded)
 
     @property
-    def payload_obj(self) -> Dict[str, Any]:
+    def payload_obj(self) -> dict[str, Any]:
         decoded = self.payload.decode()
         return json.loads(decoded)
 
