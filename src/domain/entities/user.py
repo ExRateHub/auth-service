@@ -3,22 +3,36 @@ from __future__ import annotations
 import uuid
 from dataclasses import dataclass
 
-from domain.ports.password_hasher import PasswordHasherProtocol
+from domain.entities.base import BaseEntity
 from domain.value_objects.email import Email
+from domain.value_objects.hashed_password import HashedPassword
 
 
-@dataclass(frozen=True)
-class User:
-    id: uuid.UUID
+@dataclass
+class User(BaseEntity):
     email: Email
-    hashed_password: str
+    hashed_password: HashedPassword
     is_active: bool
 
-    def verify_password(self, raw_password: str, hasher: PasswordHasherProtocol) -> bool:
-        return hasher.verify(raw_password, self.hashed_password)
+    @classmethod
+    def create(
+        cls: type[User],
+        email: Email,
+        hashed_password: HashedPassword,
+        *,
+        is_active: bool = False,
+    ) -> User:
+        return cls(
+            id=uuid.uuid4(),
+            email=email,
+            hashed_password=hashed_password,
+            is_active=is_active,
+        )
 
-    def mark_active(self) -> User:
-        return User(id=self.id, email=self.email, hashed_password=self.hashed_password, is_active=True)
+    def activate(self) -> None:
+        self.is_active = True
+        self._update_timestamp()
 
-    def mark_inactive(self) -> User:
-        return User(id=self.id, email=self.email, hashed_password=self.hashed_password, is_active=False)
+    def deactivate(self) -> None:
+        self.is_active = False
+        self._update_timestamp()
