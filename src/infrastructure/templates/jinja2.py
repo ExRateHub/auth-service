@@ -24,7 +24,7 @@ def get_jinja2_environment_from_settings(settings: Settings) -> Environment:
 
 
 @dataclass
-class Jinja2TemplateEngine(BaseTemplateEngine):
+class JinjaTemplateEngine(BaseTemplateEngine):
     """Template engine uses Jinja2"""
 
     environment: Environment
