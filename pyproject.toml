@@ -22,6 +22,7 @@ dependencies = [
     "aiosmtplib>=4.0.1",
     "dishka>=1.6.0",
     "adaptix[pydantic,sqlalchemy]>=3.0.0b11",
+    "jinja2>=3.1.6",
 ]
 
 [dependency-groups]
