@@ -1,14 +1,14 @@
 from dataclasses import dataclass
 
-from domain.errors import InvalidHashedPassword
+from domain.errors import InvalidHashedSecret
 from domain.value_objects.base import BaseValueObject
 
 
 @dataclass(frozen=True)
-class HashedPassword(BaseValueObject):
+class HashedSecret(BaseValueObject):
     """
-    Value object for hashed passwords.
-    Ensures the hashed password follows the Modular Crypt Format (MCF):
+    Value object for hashed secret.
+    Ensures the hashed secret follows the Modular Crypt Format (MCF):
     $<algorithm>$<options>$<salt>$<hash>
 
     Properties:
@@ -46,7 +46,7 @@ class HashedPassword(BaseValueObject):
     def validate(self) -> None:
         parts = self.value.split("$")
         if len(parts) < 5 or not parts[1] or not parts[-2] or not parts[-1]:
-            raise InvalidHashedPassword(f"Invalid MCF format: expected at least 4 fields, got {len(parts) - 1}")
+            raise InvalidHashedSecret(f"Invalid MCF format: expected at least 4 fields, got {len(parts) - 1}")
 
     def as_generic_type(self) -> str:
         return str(self.value)

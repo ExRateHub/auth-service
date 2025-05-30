@@ -2,7 +2,7 @@ class DomainError(Exception):
     pass
 
 
-class InvalidHashedPassword(DomainError):
+class InvalidHashedSecret(DomainError):
     pass
 
 
