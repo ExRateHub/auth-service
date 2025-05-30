@@ -2,7 +2,7 @@ class DomainError(Exception):
     pass
 
 
-class InvalidHashedPassword(DomainError):
+class InvalidHashedSecret(DomainError):
     pass
 
 
@@ -15,4 +15,8 @@ class InvalidBase64Encoding(DomainError):
 
 
 class InvalidJWTToken(DomainError):
+    pass
+
+
+class InvalidTTL(DomainError):
     pass
