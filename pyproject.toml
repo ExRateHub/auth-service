@@ -52,10 +52,14 @@ init_typed = true
 [tool.ruff]
 line-length = 120
 fix = true
+unsafe-fixes = true
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "C90", "I"]
 ignore = ["E203",]
+extend-unsafe-fixes = [
+    "F401",
+]
 
 [tool.ruff.format]
 quote-style = "double"
@@ -65,16 +69,8 @@ docstring-code-line-length = 80
 [tool.ruff.lint.isort]
 section-order = ["future", "standard-library", "third-party", "first-party", "local-folder", ]
 
-[tool.pydocstyle]
+[tool.ruff.lint.pydocstyle]
 convention = "pep257"
-match-dir = "src"
-add-ignore = [
-  "D104",  # Missing docstring in public package
-  "D105",  # Missing docstring in magic method
-  "D107",  # Missing docstring in __init__
-  "D203",  # 1 blank line required before class docstring
-  "D213",  # Multi-line docstring summary should start at end of first line
-]
 
 [tool.black]
 line-length = 120
