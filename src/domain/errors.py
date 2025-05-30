@@ -16,3 +16,7 @@ class InvalidBase64Encoding(DomainError):
 
 class InvalidJWTToken(DomainError):
     pass
+
+
+class InvalidTTL(DomainError):
+    pass
