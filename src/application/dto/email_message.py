@@ -1,19 +1,18 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-
-from litestar.contrib.jinja import JinjaTemplateEngine
+from typing import Literal, Sequence
 
 
 @dataclass(frozen=True)
-class EmailMessage:
-    to_email: str
-    subject: str
+class EmailMessageContent:
+    type: Literal["text/plain", "text/html"]
     body: str
 
-    @classmethod
-    def from_template(cls,to_email: str, subject: str, template_name: str, context: dict[str, str] | None = None) -> EmailMessage:
-        context = {} if context is None else context
 
-        JinjaTemplateEngine()
-
+@dataclass(frozen=True)
+class EmailMessageDTO:
+    to_email: str
+    subject: str
+    content: EmailMessageContent
+    alternative_contents: Sequence[EmailMessageContent]
