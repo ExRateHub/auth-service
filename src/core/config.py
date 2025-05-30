@@ -33,8 +33,10 @@ class EmailSMTPConfig(BaseSettings):
     use_tls: bool = Field(default=True, description="Enable STARTTLS")
     use_ssl: bool = Field(default=False, description="Enable SSL/TLS")
 
+
 class EmailConsoleConfig(BaseSettings):
     backend: Literal["console"]
+
 
 class EmailSettings(BaseSettings):
     config: EmailSMTPConfig | EmailConsoleConfig
@@ -48,6 +50,7 @@ class EmailSettings(BaseSettings):
     @property
     def backend(self) -> Literal["console", "smtp"]:
         return self.config.backend
+
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
