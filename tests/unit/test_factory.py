@@ -14,6 +14,7 @@ def template_engine() -> BaseTemplateEngine:
 
     return DummyTemplateEngine()
 
+
 class TestTemplateEmailMessageFactory:
     def test_build_single_template(self, template_engine: BaseTemplateEngine) -> None:
         factory = TemplateEmailMessageFactory(template_engine=template_engine)
@@ -30,7 +31,6 @@ class TestTemplateEmailMessageFactory:
         assert message.content.type == "text/plain"
         assert "Rendered welcome.txt" in message.content.body
         assert message.alternative_contents == []
-
 
     def test_build_multiple_templates(self, template_engine: BaseTemplateEngine) -> None:
         factory = TemplateEmailMessageFactory(template_engine=template_engine)
@@ -55,13 +55,11 @@ class TestTemplateEmailMessageFactory:
         assert alt.type == "text/plain"
         assert "Rendered alt.txt" in alt.body
 
-
     def test_build_empty_template_names_raises(self, template_engine: BaseTemplateEngine) -> None:
         factory = TemplateEmailMessageFactory(template_engine=template_engine)
 
         with pytest.raises(ValueError, match="Template Names should contain at least one element"):
             factory.build("a@b.com", "Subj", [], {})
-
 
     def test_get_message_content_type_invalid(self, template_engine: BaseTemplateEngine) -> None:
         factory = TemplateEmailMessageFactory(template_engine=template_engine)

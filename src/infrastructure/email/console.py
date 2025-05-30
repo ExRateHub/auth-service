@@ -1,6 +1,6 @@
 import sys
 from dataclasses import dataclass, field
-from typing import Sequence
+from typing import Sequence, TextIO
 
 from application.dto.email_message import EmailMessageDTO
 from application.ports.email_sender import EmailSender
@@ -9,9 +9,7 @@ from application.ports.email_sender import EmailSender
 @dataclass()
 class ConsoleEmailSender(EmailSender):
     name: str = field(default="console", init=False)
-
-    def __post_init__(self) -> None:
-        self._stream = sys.stdin
+    stream: TextIO = field(default=sys.stdout, kw_only=True)
 
     async def _write_message(self, message: EmailMessageDTO) -> None:
         msg = (
@@ -21,9 +19,9 @@ class ConsoleEmailSender(EmailSender):
             f"Alternative content-types: {[content.type for content in message.alternative_contents]}\n"
             f"Content-Type: {message.content.type}\n"
             f"Content: {message.content.body}\n"
-            f"=" * 60 + "\n"
+            f"{"="*60}\n"
         )
-        self._stream.write(msg)
+        self.stream.write(msg)
 
     async def send_messages(self, messages: Sequence[EmailMessageDTO]) -> int:
         sent_count = 0
