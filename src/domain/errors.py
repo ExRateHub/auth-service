@@ -14,7 +14,15 @@ class InvalidBase64Encoding(DomainError):
     pass
 
 
-class InvalidJWTToken(DomainError):
+class InvalidJwtHeader(DomainError):
+    pass
+
+
+class InvalidJwtPayload(DomainError):
+    pass
+
+
+class InvalidJwtToken(DomainError):
     pass
 
 
