@@ -23,12 +23,17 @@ class PostgresConnection(BaseSettings):
         return f"{self.engine}+{self.driver}://{self.username}:{self.password}@{self.host}:{self.port}/{self.name}"
 
 
+class SignerConfig(BaseSettings):
+    secret: str
+    algorithm: str
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file_encoding="utf-8",
         env_nested_delimiter="_",
     )
     database: PostgresConnection
+    signer: SignerConfig
 
 
 def _get_env_file() -> Path:
