@@ -2,10 +2,10 @@ import pytest
 import base64
 import json
 
-from domain.errors import InvalidEmail, InvalidHashedPassword, InvalidBase64Encoding, InvalidJWTToken
+from domain.errors import InvalidEmail, InvalidHashedSecret, InvalidBase64Encoding, InvalidJWTToken
 from domain.value_objects.base64_strng import Base64String
 from domain.value_objects.email import Email
-from domain.value_objects.hashed_password import HashedPassword
+from domain.value_objects.hashed_secret import HashedSecret
 from domain.value_objects.jwt_token import JwtToken
 
 
@@ -24,25 +24,24 @@ class TestEmail:
 
 class TestHashedPassword:
     @pytest.mark.parametrize(
-        "hashed_password",
+        "hashed_secret",
         [
             "$<algorithm>$<options>$<salt>$<hash>",
             "$<algorithm>$<options-1>$<options-2>$<salt>$<hash>",
         ],
     )
-    def test_valid_mfc(self, hashed_password: str) -> None:
-        _, algorithm, *options, salt, password_hash = hashed_password.split("$")
-        print(hashed_password.split("$"))
-        assert hashed_password == HashedPassword(hashed_password).as_generic_type()
-        assert algorithm == HashedPassword(hashed_password).algorithm
-        assert "$".join(options) == HashedPassword(hashed_password).options
-        assert salt == HashedPassword(hashed_password).salt
-        assert password_hash == HashedPassword(hashed_password).hash
+    def test_valid_mfc(self, hashed_secret: str) -> None:
+        _, algorithm, *options, salt, password_hash = hashed_secret.split("$")
+        assert hashed_secret == HashedSecret(hashed_secret).as_generic_type()
+        assert algorithm == HashedSecret(hashed_secret).algorithm
+        assert "$".join(options) == HashedSecret(hashed_secret).options
+        assert salt == HashedSecret(hashed_secret).salt
+        assert password_hash == HashedSecret(hashed_secret).hash
 
-    @pytest.mark.parametrize("hashed_password", ["$<algorithm>$<options>$<salt>"])
-    def test_invalid_mfc(self, hashed_password: str) -> None:
-        with pytest.raises(InvalidHashedPassword):
-            HashedPassword(hashed_password)
+    @pytest.mark.parametrize("hashed_secret", ["$<algorithm>$<options>$<salt>"])
+    def test_invalid_mfc(self, hashed_secret: str) -> None:
+        with pytest.raises(InvalidHashedSecret):
+            HashedSecret(hashed_secret)
 
 
 class TestBase64String:

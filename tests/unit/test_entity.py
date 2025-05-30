@@ -11,6 +11,7 @@ from domain.entities.base import BaseEntity
 from domain.entities.user import User
 from domain.value_objects.email import Email
 from infrastructure.security.password_hasher import PasswordHasher
+from infrastructure.security.hasher import PasswordHasher
 
 
 @dataclass

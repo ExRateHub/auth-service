@@ -1,6 +1,6 @@
 import pytest
 
-from infrastructure.security.password_hasher import PasswordHasher
+from infrastructure.security.hasher import PasswordHasher
 
 
 @pytest.fixture(scope="session")
