@@ -27,6 +27,7 @@ class SignerConfig(BaseSettings):
     secret: str
     algorithm: str
 
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file_encoding="utf-8",
