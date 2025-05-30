@@ -19,7 +19,7 @@ class ConsoleEmailSender(EmailSender):
             f"Alternative content-types: {[content.type for content in message.alternative_contents]}\n"
             f"Content-Type: {message.content.type}\n"
             f"Content: {message.content.body}\n"
-            f"{"="*60}\n"
+            f"{'=' * 60}\n"
         )
         self.stream.write(msg)
 
