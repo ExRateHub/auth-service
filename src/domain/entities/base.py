@@ -4,6 +4,8 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import Any, Self
 
+from domain.value_objects.hashed_secret import HashedSecret
+
 
 @dataclass
 class BaseEntity(ABC):
@@ -27,3 +29,26 @@ class BaseEntity(ABC):
     def _update_timestamp(self) -> None:
         """(protected) update the `updated_at` timestamp to now."""
         self.updated_at = datetime.datetime.now(datetime.UTC)
+
+
+@dataclass
+class BaseToken(BaseEntity):
+    hashed_token: HashedSecret
+    expires_at: datetime.datetime
+    is_revoked: bool = field(default=False, kw_only=True)
+
+    @classmethod
+    @abstractmethod
+    def create(cls, *args: Any, **kwargs: Any) -> Self:
+        """
+        Factory method for creating a new entity.
+        Must be implemented in subclasses.
+        """
+        raise NotImplementedError()
+
+    def is_expired(self) -> bool:
+        return datetime.datetime.now(datetime.UTC) >= self.expires_at
+
+    def revoke(self) -> None:
+        self.is_revoked = True
+        self._update_timestamp()
