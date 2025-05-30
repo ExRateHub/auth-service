@@ -4,6 +4,7 @@ import jwt
 
 from domain.value_objects.jwt_token import JwtPayload, JwtToken
 
+
 @dataclass
 class TokenSigner:
     secret: str
