@@ -6,7 +6,7 @@ from typing import Generator
 import pytest
 from jinja2 import Environment, FileSystemLoader, TemplateNotFound
 
-from infrastructure.templates.jinja2 import JinjaTemplateEngine
+from infrastructure.templates.jinja import JinjaTemplateEngine
 
 
 @pytest.mark.usefixtures("tmp_templates_dir")
