@@ -12,6 +12,7 @@ from infrastructure.security.token_signer import TokenSigner
 def token_signer(settings: Settings) -> TokenSignerProtocol:
     return TokenSigner(secret=settings.signer.secret, algorithm=settings.signer.algorithm)
 
+
 @pytest.fixture
 def valid_payload() -> JwtPayload:
     return JwtPayload(
@@ -20,6 +21,7 @@ def valid_payload() -> JwtPayload:
         iat=datetime.datetime.now(datetime.UTC),
         exp=datetime.datetime.now(datetime.UTC) + datetime.timedelta(hours=1),
     )
+
 
 @pytest.fixture
 def valid_payload_2() -> JwtPayload:
@@ -42,7 +44,9 @@ class TestTokenSigner:
         token = token_signer.sign(valid_payload)
         assert token_signer.verify(token) is True
 
-    def test_verify_invalid_token(self, token_signer: TokenSignerProtocol, valid_payload: JwtPayload, valid_payload_2: JwtPayload):
+    def test_verify_invalid_token(
+        self, token_signer: TokenSignerProtocol, valid_payload: JwtPayload, valid_payload_2: JwtPayload
+    ):
         token1 = token_signer.sign(valid_payload)
         token2 = token_signer.sign(valid_payload_2)
         token3 = JwtToken(
