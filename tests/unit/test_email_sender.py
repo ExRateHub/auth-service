@@ -26,7 +26,7 @@ class TestConsoleEmailSender:
             alternative_contents=[alt],
         )
 
-        count = await sender.send_messages([msg])
+        count = await sender.send_messages(msg)
         assert count == 1
 
         out = stream.getvalue().splitlines()
@@ -54,7 +54,7 @@ class TestConsoleEmailSender:
             ),
         ]
 
-        count = await sender.send_messages(msgs)
+        count = await sender.send_messages(*msgs)
         assert count == 2
 
         text = stream.getvalue()

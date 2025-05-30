@@ -1,6 +1,6 @@
 import sys
 from dataclasses import dataclass, field
-from typing import Sequence, TextIO
+from typing import TextIO
 
 from application.dto.email_message import EmailMessageDTO
 from application.ports.email_sender import EmailSender
@@ -23,7 +23,7 @@ class ConsoleEmailSender(EmailSender):
         )
         self.stream.write(msg)
 
-    async def send_messages(self, messages: Sequence[EmailMessageDTO]) -> int:
+    async def send_messages(self, *messages: EmailMessageDTO) -> int:
         sent_count = 0
         for message in messages:
             await self._write_message(message)
