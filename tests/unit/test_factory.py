@@ -6,16 +6,15 @@ from application.factory.email_message import TemplateEmailMessageFactory
 from application.ports.template_engine import BaseTemplateEngine
 
 
-@pytest.fixture(scope="class")
-def template_engine() -> BaseTemplateEngine:
-    class DummyTemplateEngine(BaseTemplateEngine):
-        def render(self, template_name: str, context: dict[str, Any]) -> str:
-            return f"Rendered {template_name} with {context}"
-
-    return DummyTemplateEngine()
-
-
 class TestTemplateEmailMessageFactory:
+    @pytest.fixture
+    def template_engine(self) -> BaseTemplateEngine:
+        class DummyTemplateEngine(BaseTemplateEngine):
+            def render(self, template_name: str, context: dict[str, Any]) -> str:
+                return f"Rendered {template_name} with {context}"
+
+        return DummyTemplateEngine()
+
     def test_build_single_template(self, template_engine: BaseTemplateEngine) -> None:
         factory = TemplateEmailMessageFactory(template_engine=template_engine)
 
