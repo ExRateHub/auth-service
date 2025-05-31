@@ -29,8 +29,6 @@ class User(BaseEntity):
 
     def activate(self) -> None:
         self.is_active = True
-        self._update_timestamp()
 
     def deactivate(self) -> None:
         self.is_active = False
-        self._update_timestamp()
