@@ -53,13 +53,14 @@ class SMTPEmailSender(EmailSender):
         return sender
 
     async def send_messages(self, *messages: EmailMessageDTO) -> int:
-
         sent_count = 0
         async with self._lock:
             async with self._smtp_client as client:
                 for message in messages:
                     email_message = EmailMessage()
-                    email_message["From"] = f"{self.from_name} <{self.from_email}>" if self.from_name else self.from_email
+                    email_message["From"] = (
+                        f"{self.from_name} <{self.from_email}>" if self.from_name else self.from_email
+                    )
                     email_message["To"] = message.to_email
                     email_message["Subject"] = message.subject
                     maintype, subtype = message.content.type.split("/")
