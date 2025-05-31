@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
 import datetime
 import uuid
+from dataclasses import dataclass
 
 from domain.entities.base import BaseToken
 from domain.value_objects.hashed_secret import HashedSecret
@@ -29,4 +29,3 @@ class ResetToken(BaseToken):
 
     def mark_as_used(self) -> None:
         self.is_used = True
-        self._update_timestamp()

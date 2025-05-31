@@ -29,4 +29,3 @@ class ConfirmToken(BaseToken):
 
     def confirm(self) -> None:
         self.is_confirmed = True
-        self._update_timestamp()
