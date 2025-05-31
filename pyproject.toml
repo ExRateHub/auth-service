@@ -1,13 +1,13 @@
 [project]
 name = "auth-service"
 version = "0.0.0"
-description = "Микросервис аутентификации для платформы ExRateHub, отвечающий за регистрацию пользователей, вход, управление API-ключами и выдачу JWT-токенов."
+description = "Authentication microservice for the ExramateHub platform, responsible for user registration, entrance, control of API-key aids and issuing JWT tokens."
 readme = "README.md"
 authors = [
     { name = "SharinAlex", email = "alex.shavrin200303@gmail.com" },
     { name = "theVeenrok", email = "veenrok@veenrok.com" },
 ]
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 dependencies = [
     "alembic>=1.16.1",
     "granian>=2.3.1",
@@ -22,9 +22,10 @@ dependencies = [
     "aiosmtplib>=4.0.1",
     "dishka>=1.6.0",
     "adaptix[pydantic,sqlalchemy]>=3.0.0b11",
+    "black[dev]>=25.1.0",
 ]
 
-[dependency-groups]
+[project.optional-dependencies]
 dev = [
     "mypy>=1.15.0",
     "ruff>=0.11.11",
@@ -32,12 +33,11 @@ dev = [
     "pytest>=8.3.5",
     "pytest-asyncio>=0.26.0",
     "pre-commit>=4.2.0",
-    "black>=25.1.0",
     "sqlalchemy[mypy]>=2.0.41",
 ]
 
 [tool.mypy]
-python_version = 3.13
+python_version = "3.13"
 ignore_missing_imports = true
 strict = true
 files = ["src", "tests"]
@@ -49,39 +49,44 @@ init_forbid_extra = false
 init_typed = true
 
 [tool.ruff]
+target-version = "py313"
+required-version = ">=0.11.12"
+src = ["src", "tests", "migrations"]
 line-length = 120
-fix = true
-
-[tool.ruff.lint]
-select = ["E", "F", "W", "C90", "I"]
-ignore = ["E203",]
+indent-width = 4
 
 [tool.ruff.format]
-quote-style = "double"
 docstring-code-format = true
 docstring-code-line-length = 80
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+skip-magic-trailing-comma = false
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "I",
+    "F",
+    "W",
+    "C90",
+]
+ignore = []
+
+[tool.ruff.lint.flake8-annotations]
+mypy-init-return = true
+suppress-none-returning = true
+
+[tool.ruff.lint.flake8-bandit]
+check-typed-exception = true
 
 [tool.ruff.lint.isort]
-section-order = ["future", "standard-library", "third-party", "first-party", "local-folder", ]
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
 
-[tool.pydocstyle]
+[tool.ruff.lint.pydocstyle]
 convention = "pep257"
-match-dir = "src"
-add-ignore = [
-  "D104",  # Missing docstring in public package
-  "D105",  # Missing docstring in magic method
-  "D107",  # Missing docstring in __init__
-  "D203",  # 1 blank line required before class docstring
-  "D213",  # Multi-line docstring summary should start at end of first line
-]
-
-[tool.black]
-line-length = 120
-target-version = ["py313"]
-skip-string-normalization = false
-
 
 [tool.pytest.ini_options]
-addopts = ["-p", "pytest_asyncio"]
+addopts = "-p pytest_asyncio"
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
