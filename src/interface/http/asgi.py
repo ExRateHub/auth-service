@@ -1,6 +1,6 @@
 from litestar import Litestar
 
-from src.interface.http.controlles.system import health
+from interface.http.controlles.system import health
 
 
 def create_asgi_application() -> Litestar:
