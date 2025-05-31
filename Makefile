@@ -21,9 +21,13 @@ run-dev-serve:
 .PHONY: format
 format:
 	@echo "Applying formatting..."
-	black src tests migrations
-	ruff format src tests migrations
+	ruff format --preview src tests migrations
 
+.PHONY: lint
+lint:
+	@echo "Run linting"
+	ruff check
+	mypy
 
 .PHONY: test
 test:
