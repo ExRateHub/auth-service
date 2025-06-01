@@ -1,35 +1,51 @@
-PYTHONPATH := src
-HTTP_SERVER := granian
-HTTP_SERVER_HOST ?= 127.0.0.1
-HTTP_SERVER_PORT ?= 8080
+# Project config
+COMPOSE_FILE=docker/compose.yaml
+PROFILE_DEV=--profile=dev
+PROFILE_PROD=--profile=prod
+PROFILE_MIGRATIONS=--profile=migrations
+ENGINE=$(shell command -v docker 2> /dev/null || echo podman)
+COMPOSE = $(ENGINE)-compose -f $(COMPOSE_FILE) # Compose wrapper
 
+PYTHONPATH := src
 ENVIRONMENT ?= dev
 
-export PYTHONPATH
-export ENVIRONMENT
+EXPORT_ENV := PYTHONPATH=$(PYTHONPATH) ENVIRONMENT=$(ENVIRONMENT)
 
-.PHONY: run-dev-serve
-run-dev-serve:
-	$(HTTP_SERVER) \
-	    interface.http.asgi:create_asgi_application \
-		--host=$(HTTP_SERVER_HOST) \
-		--port=$(HTTP_SERVER_PORT) \
-		--interface=asgi \
-		--factory \
-		--reload
+# --- BUILD ---
+compose-build-dev:
+	$(EXPORT_ENV) $(COMPOSE) $(PROFILE_DEV) build
 
-.PHONY: format
-format:
-	@echo "Applying formatting..."
-	ruff format --preview src tests migrations
+compose-build-prod:
+	$(EXPORT_ENV) $(COMPOSE) $(PROFILE_PROD) build
 
-.PHONY: lint
-lint:
-	@echo "Run linting"
-	ruff check
-	mypy
+# --- MIGRATIONS RUNNER ---
+compose-up-migration:
+	$(EXPORT_ENV) $(COMPOSE) $(PROFILE_MIGRATIONS) up
 
-.PHONY: test
+# --- UP SERVICES ---
+compose-up-dev:
+	$(EXPORT_ENV) $(COMPOSE) $(PROFILE_DEV) up --build
+
+compose-up-prod:
+	$(EXPORT_ENV) $(COMPOSE) $(PROFILE_PROD) up --build
+
+# --- DOWN & CLEANUP ---
+compose-down:
+	$(COMPOSE) down
+
+compose-clean:
+	$(ENGINE) container prune -f
+	$(ENGINE) image prune -f
+
+# --- TESTING ---
 test:
-	@echo "Run tests"
-	pytest tests
+	$(EXPORT_ENV) uv run --extra test pytest
+
+# --- LINTING ---
+lint:
+	$(EXPORT_ENV) uv run --extra lint ruff check
+	$(EXPORT_ENV) uv run --extra lint mypy
+
+# --- FORMATTING ---
+fmt:
+	PYTHONPATH=$(PYTHONPATH) uv run --extra fmt ruff format
