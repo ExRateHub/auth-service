@@ -1,0 +1,88 @@
+version: "3.9"
+
+x-auth-service-base: &auth-service-base
+  env_file:
+    - ../.env.${ENVIRONMENT}
+  ports:
+    - "8000:8000"
+  depends_on:
+    postgres:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+
+services:
+  # Postgres service (always active)
+  postgres:
+    profiles:
+      - dev
+      - prod
+      - migrations
+    image: postgres:17.0-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: auth_service_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d auth_service_db"]
+      interval: 5s       # check every 5 seconds
+      timeout: 5s        # wait up to 5 seconds for check
+      retries: 3         # consider unhealthy after 3 failures
+      start_period: 5s   # give Postgres 3 seconds to initialize
+
+  # Redis service (always active)
+  redis:
+    profiles:
+      - dev
+      - prod
+    image: redis:8-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s       # check every 5 seconds
+      timeout: 5s        # wait up to 5 seconds for check
+      retries: 3         # consider unhealthy after 3 failures
+      start_period: 5s   # give Redis 3 seconds to initialize
+
+  # One-time migration runner
+  migration-runner:
+    profiles:
+      - migrations
+    build:
+      context: ..
+      dockerfile: migrations-runner/Dockerfile
+    env_file:
+      - ../.env.${ENVIRONMENT}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  # Auth-Service in production mode
+  auth-service-prod:
+    <<: *auth-service-base
+    # This service will only start when the "prod" profile is enabled
+    profiles:
+      - prod
+    build:
+      context: ..
+      dockerfile: docker/prod/Dockerfile
+
+  # Auth-Service in development mode
+  auth-service-dev:
+    <<: *auth-service-base
+    # This service will only start when the "dev" profile is enabled
+    profiles:
+      - dev
+    build:
+      context: ..
+      dockerfile: docker/dev/Dockerfile
+
+# Define named volumes
+volumes:
+  postgres_data:
