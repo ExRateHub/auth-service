@@ -3,14 +3,13 @@ name = "auth-service"
 version = "0.0.0"
 description = "Authentication microservice for the ExramateHub platform, responsible for user registration, entrance, control of API-key aids and issuing JWT tokens."
 readme = "README.md"
+license = "MIT"
 authors = [
     { name = "SharinAlex", email = "alex.shavrin200303@gmail.com" },
     { name = "theVeenrok", email = "veenrok@veenrok.com" },
 ]
 requires-python = ">=3.13"
 dependencies = [
-    "alembic>=1.16.1",
-    "granian>=2.3.1",
     "litestar>=2.16.0",
     "psycopg[binary]>=3.2.9",
     "pydantic[email]>=2.11.5",
@@ -22,26 +21,37 @@ dependencies = [
     "aiosmtplib>=4.0.1",
     "dishka>=1.6.0",
     "adaptix[pydantic,sqlalchemy]>=3.0.0b11",
-    "black[dev]>=25.1.0",
     "jinja2>=3.1.6",
+    "granian>=2.3.1",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "mypy>=1.15.0",
-    "ruff>=0.11.11",
     "granian[reload]>=2.3.1",
+]
+migrations = [
+    "alembic>=1.16.1",
+]
+fmt = [
+    "ruff>=0.11.12",
+]
+test = [
+    "faker>=37.3.0",
     "pytest>=8.3.5",
-    "pytest-asyncio>=0.26.0",
+    "pytest-asyncio>=1.0.0",
+]
+hooks = [
     "pre-commit>=4.2.0",
-    "sqlalchemy[mypy]>=2.0.41",
 ]
 
 [tool.mypy]
 python_version = "3.13"
-ignore_missing_imports = true
+follow_imports = "silent"
+warn_unused_configs = true
+show_error_codes = true
+pretty = true
 strict = true
-files = ["src", "tests"]
+packages = ["src"]
 allow_redefinition = false
 plugins = ["pydantic.mypy", "sqlalchemy.ext.mypy.plugin"]
 
@@ -66,11 +76,16 @@ skip-magic-trailing-comma = false
 
 [tool.ruff.lint]
 select = [
-    "E",
-    "I",
-    "F",
-    "W",
-    "C90",
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "W",   # pycodestyle warnings
+    "C90", # McCabe complexity
+    "I",   # isort
+    "B",   # flake8-bandit (security issues)
+    "A",   # flake8-annotations
+    "N",   # pep8-naming
+    "UP",  # pyupgrade (modern syntax)
+    "RUF", # Ruff-specific rules
 ]
 ignore = []
 
