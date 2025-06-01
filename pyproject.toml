@@ -43,6 +43,11 @@ test = [
 hooks = [
     "pre-commit>=4.2.0",
 ]
+lint = [
+    "mypy>=1.16.0",
+    "ruff>=0.11.12",
+    "sqlalchemy[mypy]>=2.0.41",
+]
 
 [tool.mypy]
 python_version = "3.13"
