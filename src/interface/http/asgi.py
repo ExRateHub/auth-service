@@ -15,6 +15,7 @@ def create_asgi_application() -> Litestar:
         route_handlers=[
             AuthController,
             health,
-        ]
+        ],
+        openapi_config=OpenAPIConfig(title="ExRateHub API", version=1),
     )
     return app
