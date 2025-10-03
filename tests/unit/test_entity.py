@@ -173,17 +173,17 @@ class TestUserEntity:
     def test_create_sets_fields(self) -> None:
         email = Email("example@domain.com")
         hashed_password = PasswordHasher().hash("1234")
-        user = User.create(email=email, hashed_password=hashed_password)
+        user = User.create(username=email, hashed_password=hashed_password)
 
         assert isinstance(user.id, uuid.UUID) is True
-        assert user.email == email
+        assert user.username == email
         assert user.hashed_password == hashed_password
         assert user.is_active is False
 
     def test_activate_user(self) -> None:
         email = Email("example@domain.com")
         hashed_password = PasswordHasher().hash("1234")
-        user = User.create(email=email, hashed_password=hashed_password)
+        user = User.create(username=email, hashed_password=hashed_password)
         user.activate()
 
         assert user.is_active is True
@@ -191,7 +191,7 @@ class TestUserEntity:
     def test_deactivate_user(self) -> None:
         email = Email("example@domain.com")
         hashed_password = PasswordHasher().hash("1234")
-        user = User.create(email=email, hashed_password=hashed_password)
+        user = User.create(username=email, hashed_password=hashed_password)
         user.deactivate()
 
         assert user.is_active is False

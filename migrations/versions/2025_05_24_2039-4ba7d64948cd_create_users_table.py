@@ -24,7 +24,7 @@ def upgrade() -> None:
     op.create_table(
         "users",
         sa.Column("id", sa.UUID(), server_default=sa.text("gen_random_uuid()"), nullable=False),
-        sa.Column("email", sa.Text(collation="ci_text"), nullable=False),
+        sa.Column("username", sa.Text(collation="ci_text"), nullable=False),
         sa.Column("hashed_password", sa.Text(), nullable=False),
         sa.Column("is_active", sa.Boolean(), server_default=sa.text("false"), nullable=False),
         sa.Column(
@@ -40,7 +40,7 @@ def upgrade() -> None:
             nullable=False,
         ),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_users")),
-        sa.UniqueConstraint("email", name=op.f("uq_users_email")),
+        sa.UniqueConstraint("username", name=op.f("uq_users_username")),
     )
     # ### end Alembic commands ###
 

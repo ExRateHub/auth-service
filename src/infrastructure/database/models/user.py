@@ -18,7 +18,7 @@ class UserModel(TimestampedModel):
         server_default=sa.text("gen_random_uuid()"),
     )
 
-    email: Mapped[str] = mapped_column(
+    username: Mapped[str] = mapped_column(
         sa.Text(collation=COLLATION_CI_TEXT_NAME),
         unique=True,
         nullable=False,
