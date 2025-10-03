@@ -10,5 +10,6 @@ def get_async_session_factory(engine: AsyncEngine) -> async_sessionmaker[AsyncSe
     :param engine: An AsyncEngine instance to bind new sessions to.
     :return: An async_sessionmaker[AsyncSession] which can be used to generate AsyncSession objects.
     """
-    async_factory = async_sessionmaker(engine, expire_on_commit=True)
-    return async_factory
+    async_session_factory = async_sessionmaker(engine, expire_on_commit=True)
+    return async_session_factory
+
