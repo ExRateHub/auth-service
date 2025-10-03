@@ -18,7 +18,7 @@ class PostgresConnection(BaseSettings):
     password: str
 
     engine: str = Field(default="postgresql", frozen=True)
-    driver: str = Field(default="psycopg", frozen=True)
+    driver: str = Field(default="asyncpg", frozen=True)
 
     def get_url(self) -> str:
         return f"{self.engine}+{self.driver}://{self.username}:{self.password}@{self.host}:{self.port}/{self.name}"
