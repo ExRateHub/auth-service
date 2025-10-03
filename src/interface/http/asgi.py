@@ -1,5 +1,8 @@
+from dishka import make_async_container
+from dishka.integrations.litestar import setup_dishka
 from litestar import Litestar
 
+from core.di import AppProvider
 from interface.http.controlles.system import health
 
 from interface.http.controlles.auth import AuthController
@@ -18,4 +21,8 @@ def create_asgi_application() -> Litestar:
         ],
         openapi_config=OpenAPIConfig(title="ExRateHub API", version=1),
     )
+
+    container = make_async_container(AppProvider())
+
+    setup_dishka(container=container, app=app)
     return app
