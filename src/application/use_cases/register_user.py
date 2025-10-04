@@ -5,7 +5,7 @@ from application.use_cases.base import BaseUseCase, BaseCommand
 from domain.entities.user import User
 from domain.errors import UsernameAlreadyExists
 from domain.value_objects.username import Username
-from infrastructure.database.repository.user import UserRepository
+from infrastructure.persistence.repository.user import UserRepository
 from infrastructure.security.hasher import PasswordHasher
 
 

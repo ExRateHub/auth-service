@@ -5,8 +5,8 @@ from sqlalchemy.engine import Connection
 
 from core.config import get_settings
 from core.logging import setup_logging
-from infrastructure.database.engine import create_engine_from_settings
-from infrastructure.database.models.base import metadata
+from infrastructure.persistence.engine import create_engine_from_settings
+from infrastructure.persistence.models.base import metadata
 
 config = context.config
 settings = get_settings()

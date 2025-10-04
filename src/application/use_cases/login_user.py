@@ -11,7 +11,7 @@ from domain.errors import InvalidCredentialsError
 from domain.value_objects.token_key import TokenKey
 from domain.value_objects.ttl import TTL
 from domain.value_objects.username import Username
-from infrastructure.database.repository.user import UserRepository
+from infrastructure.persistence.repository.user import UserRepository
 from infrastructure.security.hasher import PasswordHasher
 
 
