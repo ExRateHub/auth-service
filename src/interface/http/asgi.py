@@ -4,7 +4,8 @@ from litestar import Litestar
 from litestar.logging import StructLoggingConfig
 from litestar.openapi import OpenAPIConfig
 
-from core.di import AppProvider
+from core.di import SettingsProvider, SecurityProvider, PersistenceProvider, RepositoryProvider, \
+    UseCasesProvider
 from core.logging import get_logger, setup_logging
 from interface.http.controlles.system import health
 
@@ -28,7 +29,13 @@ def create_asgi_application() -> Litestar:
         logging_config=StructLoggingConfig()
     )
 
-    container = make_async_container(AppProvider())
+    container = make_async_container(
+        SettingsProvider(),
+        PersistenceProvider(),
+        SecurityProvider(),
+        RepositoryProvider(),
+        UseCasesProvider(),
+    )
 
     setup_dishka(container=container, app=app)
     setup_logging()

@@ -29,9 +29,25 @@ class InvalidBase64Encoding(ValidationError):
     detail = "Invalid base 64 encoding."
 
 
-class InvalidJWTToken(ValidationError):
-    detail = "Invalid JWT token."
+class InvalidTokenKey(ValidationError):
+    detail = "Invalid token key."
 
 
 class InvalidTTL(ValidationError):
     detail = "Invalid TTL."
+
+
+class SecurityError(DomainError):
+    pass
+
+
+class InvalidCredentialsError(SecurityError):
+    detail = "Invalid credentials."
+
+
+class TokenExpiredError(SecurityError):
+    detail = "Token is expired."
+
+
+class TokenRevokedError(SecurityError):
+    detail = "Token is revoked."

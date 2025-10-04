@@ -23,7 +23,7 @@ class BaseEntity(ABC):
 
 @dataclass
 class BaseToken(BaseEntity):
-    hashed_token: HashedSecret
+    hashed_key: HashedSecret
     expires_at: datetime.datetime
     is_revoked: bool = field(default=False, kw_only=True)
 
@@ -36,6 +36,7 @@ class BaseToken(BaseEntity):
         """
         raise NotImplementedError()
 
+    @property
     def is_expired(self) -> bool:
         return datetime.datetime.now(datetime.UTC) >= self.expires_at
 
