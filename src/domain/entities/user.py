@@ -3,7 +3,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from domain.entities.base import BaseEntity
-from domain.value_objects.email import Email
 from domain.value_objects.hashed_secret import HashedSecret
 from domain.value_objects.username import Username
 
