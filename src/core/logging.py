@@ -1,17 +1,23 @@
-import logging.config
+import logging
 
-import yaml
-
-from core.config import PROJECT_DIR
-
-LOGGING_CONFIG_FILE = PROJECT_DIR / "logging.yaml"
+import structlog
 
 
 def setup_logging() -> None:
-    with open(LOGGING_CONFIG_FILE) as file:
-        logging_config = yaml.safe_load(file)
-    logging.config.dictConfig(logging_config)
+    structlog.configure(
+        processors=[
+            structlog.contextvars.merge_contextvars,
+            structlog.processors.add_log_level,
+            structlog.processors.StackInfoRenderer(),
+            structlog.dev.set_exc_info,
+            structlog.processors.TimeStamper(fmt="%Y-%m-%d %H:%M:%S", utc=False),
+            structlog.dev.ConsoleRenderer()
+        ],
+        wrapper_class = structlog.make_filtering_bound_logger(logging.NOTSET),
+        context_class = dict,
+        logger_factory = structlog.PrintLoggerFactory(),
+        cache_logger_on_first_use = False
+    )
 
-
-def get_logger(name: str = "root") -> logging.Logger:
-    return logging.getLogger(name)
+def get_logger(name) -> structlog.stdlib.BoundLogger:
+    return structlog.get_logger(name)

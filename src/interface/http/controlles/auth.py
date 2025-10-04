@@ -5,7 +5,7 @@ from litestar.controller import Controller
 
 from application.use_cases.register_user import RegisterUserUseCase, RegisterUserCommand
 from domain.value_objects.username import Username
-from src.interface.http.schemas.auth import UserRegistrationSchema, UserSchema, UserLoginSchema
+from interface.http.schemas.auth import UserRegistrationSchema, UserSchema
 
 
 class AuthController(Controller):
