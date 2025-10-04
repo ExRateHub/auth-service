@@ -9,6 +9,7 @@ from core.logging import get_logger, setup_logging
 from interface.http.controlles.system import health
 
 from interface.http.controlles.auth import AuthController
+from interface.http.exception_handlers import get_exception_handlers_map
 
 
 def create_asgi_application() -> Litestar:
@@ -22,6 +23,7 @@ def create_asgi_application() -> Litestar:
             AuthController,
             health,
         ],
+        exception_handlers=get_exception_handlers_map(),
         openapi_config=OpenAPIConfig(title="ExRateHub API", version="1.0.0dev"),
         logging_config=StructLoggingConfig()
     )
