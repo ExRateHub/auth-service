@@ -6,7 +6,7 @@ from domain.entities.user import User
 from domain.value_objects.username import Username
 from infrastructure.orm.models import UserModel
 from infrastructure.persistence.repository.base import BaseSQLAlchemyRepository
-from infrastructure.mappers.user import UserMapper
+from infrastructure.persistence.mappers.user import UserMapper
 
 
 @dataclass

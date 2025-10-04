@@ -9,7 +9,7 @@ from infrastructure.orm.engine import get_async_engine_from_settings
 from infrastructure.persistence.repository.auth_token import AuthTokenRepositoryMemStorage
 from infrastructure.persistence.repository.user import UserRepository
 from infrastructure.orm.session import get_async_session_factory
-from infrastructure.mappers.user import UserMapper
+from infrastructure.persistence.mappers.user import UserMapper
 from infrastructure.security.auth_token_service import AuthTokenService
 from infrastructure.security.hasher import PasswordHasher, TokenHasher
 
