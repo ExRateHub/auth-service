@@ -1,30 +1,37 @@
-class DomainError(Exception):
-    pass
+from core.errors import DetailError
 
 
-class InvalidHashedSecret(DomainError):
-    pass
+class DomainError(DetailError):
+    """Domain error."""
 
 
-class InvalidEmail(DomainError):
-    pass
+class ValidationError(DomainError):
+    """Validation error."""
 
 
-class InvalidUsername(DomainError):
-    pass
+class InvalidHashedSecret(ValidationError):
+    detail = "Invalid hashed secret."
 
 
-class UsernameAlreadyExists(DomainError):
-    pass
+class InvalidEmail(ValidationError):
+    detail = "Invalid email."
 
 
-class InvalidBase64Encoding(DomainError):
-    pass
+class InvalidUsername(ValidationError):
+    detail = "Invalid username."
 
 
-class InvalidJWTToken(DomainError):
-    pass
+class UsernameAlreadyExists(ValidationError):
+    detail = "Username already exists"
 
 
-class InvalidTTL(DomainError):
-    pass
+class InvalidBase64Encoding(ValidationError):
+    detail = "Invalid base 64 encoding."
+
+
+class InvalidJWTToken(ValidationError):
+    detail = "Invalid JWT token."
+
+
+class InvalidTTL(ValidationError):
+    detail = "Invalid TTL."
