@@ -27,6 +27,7 @@ class UserModel(TimestampedModel):
     hashed_password: Mapped[str] = mapped_column(
         sa.Text,
         nullable=False,
+        repr=False,
     )
 
     is_active: Mapped[bool] = mapped_column(
