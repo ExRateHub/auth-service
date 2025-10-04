@@ -5,7 +5,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
 from core.constants import COLLATION_CI_TEXT_NAME
-from infrastructure.persistence.models import TimestampedModel
+from infrastructure.orm.models import TimestampedModel
 
 
 class UserModel(TimestampedModel):

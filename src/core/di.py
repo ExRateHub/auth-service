@@ -5,10 +5,10 @@ from application.ports.token_repository import TokenRepositoryProtocol
 from application.use_cases.login_user import LoginUserUseCase
 from application.use_cases.register_user import RegisterUserUseCase
 from core.config import Settings, get_settings
-from infrastructure.persistence.engine import get_async_engine_from_settings
+from infrastructure.orm.engine import get_async_engine_from_settings
 from infrastructure.persistence.repository.auth_token import AuthTokenRepositoryMemStorage
 from infrastructure.persistence.repository.user import UserRepository
-from infrastructure.persistence.session import get_async_session_factory
+from infrastructure.orm.session import get_async_session_factory
 from infrastructure.mappers.user import UserMapper
 from infrastructure.security.auth_token_service import AuthTokenService
 from infrastructure.security.hasher import PasswordHasher, TokenHasher

@@ -1,7 +1,7 @@
 from domain.entities.user import User
 from domain.value_objects.hashed_secret import HashedSecret
 from domain.value_objects.username import Username
-from infrastructure.persistence.models import UserModel
+from infrastructure.orm.models import UserModel
 from infrastructure.mappers.base import BaseMapper
 
 

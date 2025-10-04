@@ -1,11 +1,10 @@
 from dataclasses import dataclass
 
 import sqlalchemy as sa
-from adaptix.conversion import ConversionRetort
 
 from domain.entities.user import User
 from domain.value_objects.username import Username
-from infrastructure.persistence.models import UserModel
+from infrastructure.orm.models import UserModel
 from infrastructure.persistence.repository.base import BaseSQLAlchemyRepository
 from infrastructure.mappers.user import UserMapper
 
