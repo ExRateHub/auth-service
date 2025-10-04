@@ -5,7 +5,7 @@ import sqlalchemy as sa
 from domain.entities.user import User
 from domain.value_objects.username import Username
 from infrastructure.orm.models import UserModel
-from infrastructure.persistence.repository.base import BaseSQLAlchemyRepository
+from infrastructure.orm.repository import BaseSQLAlchemyRepository
 from infrastructure.persistence.mappers.user import UserMapper
 
 
