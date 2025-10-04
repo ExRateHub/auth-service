@@ -1,24 +1,26 @@
-from adaptix import Retort
 from dishka import Provider, provide, Scope
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 
+from application.ports.token_repository import TokenRepositoryProtocol
+from application.use_cases.login_user import LoginUserUseCase
 from application.use_cases.register_user import RegisterUserUseCase
 from core.config import Settings, get_settings
 from infrastructure.database.engine import get_async_engine_from_settings
+from infrastructure.database.repository.auth_token import AuthTokenRepositoryMemStorage
 from infrastructure.database.repository.user import UserRepository
 from infrastructure.database.session import get_async_session_factory
 from infrastructure.mappers.user import UserMapper
-from infrastructure.security.hasher import PasswordHasher
+from infrastructure.security.auth_token_service import AuthTokenService
+from infrastructure.security.hasher import PasswordHasher, TokenHasher
 
 
-class AppProvider(Provider):
+class SettingsProvider(Provider):
+
     @provide(scope=Scope.APP)
     async def provide_settings(self) -> Settings:
         return get_settings()
 
-    @provide(scope=Scope.APP)
-    async def provide_user_mapper(self) -> UserMapper:
-        return UserMapper()
+class PersistenceProvider(Provider):
 
     @provide(scope=Scope.APP)
     async def provide_async_engine(self, settings: Settings) -> AsyncEngine:
@@ -27,6 +29,12 @@ class AppProvider(Provider):
     @provide(scope=Scope.REQUEST)
     async def provide_async_session_factory(self, async_engine: AsyncEngine) -> async_sessionmaker[AsyncSession]:
         return get_async_session_factory(async_engine)
+
+class RepositoryProvider(Provider):
+
+    @provide(scope=Scope.APP)
+    async def provide_user_mapper(self) -> UserMapper:
+        return UserMapper()
 
     @provide(scope=Scope.REQUEST)
     async def provide_user_repository(
@@ -37,11 +45,48 @@ class AppProvider(Provider):
         return UserRepository(session_factory=async_session_factory, mapper=mapper)
 
     @provide(scope=Scope.APP)
+    async def provide_auth_token_repository(
+        self,
+    ) -> TokenRepositoryProtocol:
+        return AuthTokenRepositoryMemStorage()
+
+class SecurityProvider(Provider):
+    @provide(scope=Scope.APP)
     async def provide_password_hasher(self) -> PasswordHasher:
         return PasswordHasher()
 
+    @provide(scope=Scope.APP)
+    async def provide_token_hasher(self) -> TokenHasher:
+        return TokenHasher()
+
+    @provide(scope=Scope.APP)
+    async def provide_auth_token_service(self, hasher: TokenHasher, ) -> AuthTokenService:
+        return AuthTokenService(hasher=hasher)
+
+
+class UseCasesProvider(Provider):
+
     @provide(scope=Scope.REQUEST)
     async def provide_user_register_use_case(
-        self, user_repository: UserRepository, hasher: PasswordHasher
+        self,
+        user_repository: UserRepository,
+        hasher: PasswordHasher,
     ) -> RegisterUserUseCase:
         return RegisterUserUseCase(user_repository=user_repository, hasher=hasher)
+
+    @provide(scope=Scope.REQUEST)
+    async def provide_user_login_use_case(
+        self,
+        hasher: PasswordHasher,
+        token_service: AuthTokenService,
+        token_repository: TokenRepositoryProtocol,
+        user_repository: UserRepository,
+
+    ) -> LoginUserUseCase:
+        use_case = LoginUserUseCase(
+            hasher=hasher,
+            token_service=token_service,
+            token_repository=token_repository,
+            user_repository=user_repository,
+        )
+        return use_case
