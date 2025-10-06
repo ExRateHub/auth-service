@@ -9,6 +9,7 @@ class UserMapper(BaseMapper[User, UserModel]):
 
     def to_entity(self, data: UserModel) -> User:
         entity = User(
+            id=data.id,
             username=Username(data.username),
             hashed_password=HashedSecret(data.hashed_password),
             is_active=data.is_active
