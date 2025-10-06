@@ -1,3 +1,5 @@
+import uuid
+
 from pydantic import BaseModel
 
 
@@ -17,9 +19,10 @@ class UserLoginSchema(BaseModel):
 class UserSchema(BaseModel):
     """User schema"""
     username: str
+    id: uuid.UUID
 
 class TokenSchema(BaseModel):
-    """User schema"""
+    """Token schema"""
     key: str
 
 class LoginResponseSchema(BaseModel):
