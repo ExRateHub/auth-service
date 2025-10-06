@@ -23,4 +23,6 @@ class PasswordHasher(Argon2Hasher):
 
 
 class TokenHasher(Argon2Hasher):
-    pass
+    static_salt = b"10101010101010101010101010101010"
+    def hash(self, raw_secret: str) -> HashedSecret:
+        return HashedSecret(self._hasher.hash(password=raw_secret, salt=self.static_salt))
