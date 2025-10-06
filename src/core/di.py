@@ -3,10 +3,12 @@ from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 
 from application.ports.token_repository import TokenRepositoryProtocol
 from application.use_cases.login_user import LoginUserUseCase
+from application.use_cases.logout_user import LogoutUserUseCase
 from application.use_cases.register_user import RegisterUserUseCase
 from core.config import Settings, get_settings
 from infrastructure.orm.engine import get_async_engine_from_settings
-from infrastructure.persistence.repository.auth_token import AuthTokenRepositoryMemStorage
+from infrastructure.persistence.mappers.auth_token import AuthTokenMapper
+from infrastructure.persistence.repository.auth_token import AuthTokenRepository
 from infrastructure.persistence.repository.user import UserRepository
 from infrastructure.orm.session import get_async_session_factory
 from infrastructure.persistence.mappers.user import UserMapper
@@ -36,6 +38,10 @@ class RepositoryProvider(Provider):
     async def provide_user_mapper(self) -> UserMapper:
         return UserMapper()
 
+    @provide(scope=Scope.APP)
+    async def provide_auth_token_mapper(self) -> AuthTokenMapper:
+        return AuthTokenMapper()
+
     @provide(scope=Scope.REQUEST)
     async def provide_user_repository(
         self,
@@ -44,11 +50,13 @@ class RepositoryProvider(Provider):
     ) -> UserRepository:
         return UserRepository(session_factory=async_session_factory, mapper=mapper)
 
-    @provide(scope=Scope.APP)
+    @provide(scope=Scope.REQUEST)
     async def provide_auth_token_repository(
         self,
+        async_session_factory: async_sessionmaker[AsyncSession],
+        mapper: AuthTokenMapper,
     ) -> TokenRepositoryProtocol:
-        return AuthTokenRepositoryMemStorage()
+        return AuthTokenRepository(session_factory=async_session_factory, mapper=mapper)
 
 class SecurityProvider(Provider):
     @provide(scope=Scope.APP)
@@ -88,5 +96,19 @@ class UseCasesProvider(Provider):
             token_service=token_service,
             token_repository=token_repository,
             user_repository=user_repository,
+        )
+        return use_case
+
+    @provide(scope=Scope.REQUEST)
+    async def provide_logout_user_use_case(
+        self,
+        hasher: TokenHasher,
+        token_service: AuthTokenService,
+        token_repository: TokenRepositoryProtocol,
+    ) -> LogoutUserUseCase:
+        use_case = LogoutUserUseCase(
+            hasher=hasher,
+            token_service=token_service,
+            token_repository=token_repository,
         )
         return use_case
