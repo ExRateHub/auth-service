@@ -5,7 +5,7 @@ from sqlalchemy.engine import Connection
 
 from core.config import get_settings
 from core.logging import setup_logging
-from infrastructure.orm.engine import create_engine_from_settings
+from infrastructure.orm.engine import get_async_engine_from_settings
 from infrastructure.orm.models.base import metadata
 
 config = context.config
@@ -53,7 +53,7 @@ async def run_async_migrations() -> None:
 
     """
 
-    engine = create_engine_from_settings(settings)
+    engine = get_async_engine_from_settings(settings)
 
     async with engine.connect() as connection:
         await connection.run_sync(do_run_migrations)
