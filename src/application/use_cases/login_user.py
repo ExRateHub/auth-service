@@ -12,7 +12,6 @@ from domain.value_objects.token_key import TokenKey
 from domain.value_objects.ttl import TTL
 from domain.value_objects.username import Username
 from infrastructure.persistence.repository.user import UserRepository
-from infrastructure.security.hasher import PasswordHasher
 
 
 
@@ -39,6 +38,5 @@ class LoginUserUseCase(BaseUseCase):
             raise InvalidCredentialsError("Invalid password")
 
         auth_token, token_key = self.token_service.generate_token(user, ttl=TTL.from_seconds(60*60*24*7))
-
         auth_token = await self.token_repository.add(auth_token)
         return user, auth_token, token_key
