@@ -11,13 +11,6 @@ from infrastructure.orm.models import TimestampedModel
 class UserModel(TimestampedModel):
     __tablename__ = "users"
 
-    id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True),
-        primary_key=True,
-        default=uuid.uuid4,
-        server_default=sa.text("gen_random_uuid()"),
-    )
-
     username: Mapped[str] = mapped_column(
         sa.Text(collation=COLLATION_CI_TEXT_NAME),
         unique=True,
